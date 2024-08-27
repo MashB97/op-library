@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OP Library</title>
+        <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body id="library-page">
+        <h1 class="library-title"></h1>
+        <p class="library-title library-subtitle"></p>
+        <div class="show-library-container">
+        </div>
+        <dialog class="add-book-dialog">
+            <form class="add-book-form" action="#" method="dialog">
+                <label for="title">Book Title</label>
+                <input class="book-form-input" type="text" id="title" name="title">
+                <label for="author">Author Name</label>
+                <input class="book-form-input" type="text" id="author" name="author">
+                <label for="pages">Number of Pages</label>
+                <input class="book-form-input" type="text" id="pages" name="pages">
+                <p>Have you read this book?</p>
+                <div class="radio-btn">
+                    <input type="radio" id="read-yes" name="read" value="yes">
+                    <label for="read-yes" class="checkbox-label">Yes</label>
+                    <input type="radio" id="read-no" name="read" value="no">
+                    <label for="read-no" class="checkbox-label">No</label>
+                </div>
+                <div class="btn-container">
+                    <button class="add-book-btn">Add</button>
+                    <button class="hide-dialog-btn" autofocus>Back</button>
+                </div>
+            </form>
+        </dialog>
+        <button class="show-dialog-btn">Add Book</button>
+        <script class="scriptTag" src="./scripts/main.js"></script>
+    </body>
+</html>

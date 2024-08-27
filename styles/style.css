@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    /*Tailwind color*/
+    --red-200-color: #fecaca;
+    --red-500-color: #ef4444;
+    --red-700-color: #b91c1c;
+    --red-900-color: #7f1d1d;
+    --red-950-color: #450a0a;
+}
+@font-face {
+    font-family: roboto-condensed-font;
+    src: url(../fonts/Roboto-Condensed.ttf);
+}
+@font-face {
+    font-family: roboto-light-font;
+    src: url(../fonts/Roboto-Light.ttf);
+}
+#library-page {
+    background-color: var(--red-900-color);
+}
+    .library-title {
+        font-size: 2rem;
+        font-family: roboto-condensed-font;
+        color: var(--red-200-color);
+        text-align: center;
+        margin-top: 5vh;
+    }
+    .library-subtitle {
+        margin: 2.5vh 0;
+    }
+    .show-library-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        width: auto;
+        height: auto;
+        gap: 2vw;
+        margin: 2vh 2vw;
+    }
+        .card-book {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--red-950-color);
+            box-shadow: 0 0 0.5em 0.5em var(--red-200-color);
+            width: auto;
+            font-family: roboto-light-font, sans-serif;
+            font-size: 1.5rem;
+            background-color: var(--red-700-color);
+            color: var(--red-200-color);
+            gap: 1vh;
+            padding-top: 2vh;
+            border-radius: 7vh;
+            font-weight: bold;
+        }
+        .remove-book {
+            padding: 1vh;
+            margin-top: 1vh;
+            border-radius: 5vh;
+            border: 1px solid var(--red-950-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-family: roboto-condensed-font, sans-serif;
+            text-align: center;
+            background-color: var(--red-500-color);
+            color: var(--red-200-color);
+        }
+        .change-status {
+            padding: 1vh;
+            margin: 2vh 0;
+            border-radius: 5vh;
+            border: 1px solid var(--red-950-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-family: roboto-condensed-font, sans-serif;
+            text-align: center;
+            background-color: var(--red-500-color);
+            color: var(--red-200-color);
+        }
+    .add-book-dialog {
+        background-color: var(--red-900-color);
+        color: var(--red-200-color);
+        border-radius: 5vh;
+        margin-left: 42vw;
+        margin-top: 15vh;
+    }
+    ::backdrop {
+        background: radial-gradient(circle, #fecaca, #450a0a);
+    }
+        .add-book-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1vh 1vw;
+        }
+            .add-book-form label, .add-book-form p {
+                font-size: 1.5rem;
+                margin: 2vh 0;
+            }
+            .book-form-input {
+                text-align: center;
+                font-size: 1.2rem;
+                border-radius: 5vh;
+                border: none;
+                outline: none;
+                width: 70%;
+                height: 3vh;
+            }
+            .book-form-input:focus {
+                box-shadow: 0 0 0.2em 0.2em var(--red-200-color);
+            }
+            .btn-container {
+                text-align: center;
+            }
+            .radio-btn label {
+                font-size: 1.5rem;
+                margin: 0 0.5vw;
+            }
+            .radio-btn input {
+                transform: scale(1.5);
+                margin-left: 1vw;
+                accent-color: var(--red-700-color);
+            }
+            .add-book-form button {
+                font-size: 1.2rem;
+                color: var(--red-200-color);
+                background-color: var(--red-700-color);
+                border-radius: 5vh;
+                border: none;
+                padding: 1vh 2vw;
+                margin: 2vh 0;
+                cursor: pointer;
+            }
+            .add-book-form button:hover {
+                background-color: var(--red-500-color);
+            }
+    .show-dialog-btn {
+        margin-left: 45vw;
+        color: var(--red-200-color);
+        background-color: var(--red-700-color);
+        border-radius: 5vh;
+        border: 1px solid var(--red-950-color);
+        padding: 1vh 2vw;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+    .show-dialog-btn:hover {
+        background-color: var(--red-500-color);
+    }
+.hide-element {
+    display: none;
+}
