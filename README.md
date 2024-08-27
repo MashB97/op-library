@@ -64,7 +64,7 @@ By following these steps, you can effectively manage your book collection using 
 2. **Access the Repository Directory**
 
     ```bash
-    cd op-op-library
+    cd op-library
 
 3. **Open `index.html` in your browser:**
     
