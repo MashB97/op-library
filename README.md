@@ -112,7 +112,31 @@ By following these steps, you can effectively manage your book collection using 
 
     git push origin branch-name
 
-## Contributing
+## Update: ES6 Class Refactor
+
+### Branch `op-library-ES6class`
+
+In the `op-library-ES6class` branch, the code has been refactored to use ES6 classes instead of plain JavaScript constructors.
+  
+#### Benefits of ES6 Classes:
+
+- **Logic Encapsulation:**: The logic related to the library and book management is now wrapped inside a Library class,      making the code more modular and reusable.
+
+- **Improved Maintainability:**: The class structure simplifies adding new features and makes the code more readable.
+
+- **Encapsulated Event Listeners:**: Event listeners are now methods of the class, improving code organization.
+
+#### Key changes include:
+
+- Creation of a `Library` class that manages all logic for adding, displaying, and removing books.
+ 
+- Methods like `addBookToLibrary()`, `createCardBook()`, e `updateLibraryDisplay()` are now part of the `Library` class.
+
+- Every function handling user interactions is now included as a class method.
+
+To switch to the version using ES6 classes, make sure to clone the `op-library-ES6class` branch, and to do this, refer to point 2 of "How to Commit Changes and Update GitHub".
+
+
 
 Feel free to submit issues, fork the repository, and create pull requests. Contributions are welcome!
 
