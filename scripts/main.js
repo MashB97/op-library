@@ -1,172 +1,188 @@
-const libraryPage = document.querySelector('#library-page');
-const showLibraryContainer = document.querySelector('.show-library-container');
-const libraryTitle = document.querySelector('.library-title');
-const librarySubTitle = document.querySelector('.library-subtitle');
-
-const dialogAddBook = document.querySelector('.add-book-dialog');
-const DialogBtn = document.querySelector('.add-book-dialog + .show-dialog-btn');
-const btnContainer = document.querySelector('.btn-container');
-const showDialogBtn = document.querySelector('.show-dialog-btn');
-const hideDialogBtn = document.querySelector('.hide-dialog-btn');
-const addBookBtn = document.querySelector('.add-book-btn');
-
-const addBookForm = document.querySelector('.add-book-form');
-const titleBook = document.querySelector('#title');
-const authorBook = document.querySelector('#author');
-const pagesBook = document.querySelector('#pages');
-const readYesBook = document.querySelector('#read-yes');
-const readNoBook = document.querySelector('#read-no');
-
-const incompleteMsg = document.createElement('p');
-btnContainer.appendChild(incompleteMsg);
-
-let myLibrary = [];
-// Display welcome msg on DOM content load
-document.addEventListener('DOMContentLoaded', () => {
-    libraryTitle.textContent = 'Welcome to your library';
-    librarySubTitle.textContent = 'click the button to add a book';
-});
-// Function to create a book object with title, author, number of pages, and read status
-function Book (title, author, pages, readStatus) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.readStatus = readStatus; 
-};
-// Add book to library
-// Update the library display
-// Clear the form fields
-const addBookToLibrary = () => {
-    let newBook = new Book(titleBook.value, authorBook.value, pagesBook.value, readYesBook.checked ? "yes" : "no");
-    myLibrary.push(newBook);
-    updateLibraryDisplay();  
-    clearContent();  
-};
-/* Function to create and display book cards in the library.
-   Each card includes the book's information (title, author, number of pages, read status):
-        - Sets welcome messages.
-        - Iterates through all existing books.
-        - Creates an element for the book card and adds the information.
-        - Creates and adds a button to remove the book from the library and handles the click event for removal.
-        - Creates and adds a button to change the book's read status and handles the click event to change the status.
-        - Displays a message if there are no books in the library.
-*/
-
-const createCardBook = () => {
-    libraryTitle.textContent = 'Welcome to your library';
-    librarySubTitle.textContent = 'This is the list of your books';
-    myLibrary.forEach((book, index) => {
-        const cardBook = document.createElement('div');
-        cardBook.classList.add('card-book');
-        showLibraryContainer.appendChild(cardBook);
-
-        const titleElem = document.createElement('p');
-        titleElem.textContent = `Title: ${book.title}`;
-        titleElem.classList.add('title-book');
-        cardBook.appendChild(titleElem);
-
-        const authorElem = document.createElement('p');
-        authorElem.textContent = `Author: ${book.author}`;
-        authorElem.classList.add('author-book');
-        cardBook.appendChild(authorElem);
-
-        const pagesElem = document.createElement('p');
-        pagesElem.textContent = `N° pages: ${book.pages}`;
-        pagesElem.classList.add('author-book');
-        cardBook.appendChild(pagesElem);
-
-        const readElem = document.createElement('p');
-        readElem.textContent = `Read: ${book.readStatus}`;
-        readElem.classList.add('read-book');
-        cardBook.appendChild(readElem);
-
-        const btnRemoveBook = document.createElement('button');
-        btnRemoveBook.setAttribute('type', 'submit');
-        btnRemoveBook.textContent = 'Delete';
-        btnRemoveBook.classList.add('remove-book');
-        cardBook.appendChild(btnRemoveBook);
-
-        btnRemoveBook.addEventListener('click', (e) => {
-            e.preventDefault();
-            cardBook.remove(); // Removes the book card from the DOM
-            myLibrary.splice(index, 1); // Removes the book from the library array
-            updateLibraryDisplay(); // Updates the library display
+class Library {
+    // Constructor: Initializes library properties and selects DOM elements
+    constructor() {
+        // Array to hold books
+        this.myLibrary = [];
+        // Select main DOM elements
+        this.libraryTitle = document.querySelector('.library-title');
+        this.librarySubTitle = document.querySelector('.library-subtitle');
+        this.showLibraryContainer = document.querySelector('.show-library-container');
+        this.dialogAddBook = document.querySelector('.add-book-dialog');
+        this.showDialogBtn = document.querySelector('.show-dialog-btn');
+        this.hideDialogBtn = document.querySelector('.hide-dialog-btn');
+        this.addBookBtn = document.querySelector('.add-book-btn');
+        // Create an incomplete message for the form and append it to the container
+        this.incompleteMsg = document.createElement('p');
+        document.querySelector('.btn-container').appendChild(this.incompleteMsg);
+        // Select form inputs
+        this.addBookForm = document.querySelector('.add-book-form');
+        this.titleBook = document.querySelector('#title');
+        this.authorBook = document.querySelector('#author');
+        this.pagesBook = document.querySelector('#pages');
+        this.readYesBook = document.querySelector('#read-yes');
+        this.readNoBook = document.querySelector('#read-no');
+        // Initialize the library with event listeners and display welcome message
+        this.init();
+    }
+    // Method to initialize event listeners and show welcome message
+    init() {
+        // Show welcome message on page load
+        document.addEventListener('DOMContentLoaded', this.displayWelcomeMessage.bind(this));
+        // Opens the dialog to add a book
+        this.showDialogBtn.addEventListener('click', this.showAddBookDialog.bind(this));
+        // Closes the dialog to add a book
+        this.hideDialogBtn.addEventListener('click', this.hideAddBookDialog.bind(this));
+        // Handles the event to add a book
+        this.addBookBtn.addEventListener('click', this.handleAddBook.bind(this));
+    }
+    // Displays welcome message
+    displayWelcomeMessage() {
+        this.libraryTitle.textContent = 'Welcome to your library';
+        this.librarySubTitle.textContent = 'Click the button to add a book';
+    }
+    // Creates a new book object using the form data
+    createBook() {
+        const title = this.titleBook.value;
+        const author = this.authorBook.value;
+        const pages = this.pagesBook.value;
+        const readStatus = this.readYesBook.checked ? "yes" : "no";
+        // Returns a book object
+        return { title, author, pages, readStatus };
+    }
+    // Adds the new book to the library
+    addBookToLibrary() {
+        // Create a new book from the form and push it to the myLibrary array
+        const newBook = this.createBook();
+        this.myLibrary.push(newBook);
+        // Update the library display and clear the form
+        this.updateLibraryDisplay();
+        this.clearForm();
+    }
+    // Shows the dialog for adding a new book
+    showAddBookDialog(e) {
+        // Prevents default behavior
+        e.preventDefault(); 
+        // Hides library elements to show the dialog
+        this.showDialogBtn.classList.add('hide-element');
+        this.showLibraryContainer.classList.add('hide-element');
+        this.libraryTitle.classList.add('hide-element');
+        this.librarySubTitle.classList.add('hide-element');
+        this.incompleteMsg.textContent = '';
+        // Shows the dialog window
+        this.dialogAddBook.showModal();
+    }
+    // Hides the add book dialog and restores the previous view
+    hideAddBookDialog(e) {
+        e.preventDefault();
+        // Closes the dialog
+        this.dialogAddBook.close();
+        // Makes library elements visible again
+        this.showDialogBtn.classList.remove('hide-element');
+        this.showLibraryContainer.classList.remove('hide-element');
+        this.libraryTitle.classList.remove('hide-element');
+        this.librarySubTitle.classList.remove('hide-element');
+        // If the library is empty, show the welcome message again
+        if (this.showLibraryContainer.children.length === 0) {
+            this.displayWelcomeMessage();
+        }
+    }
+    // Handles the event of adding a book
+    handleAddBook(e) {
+        e.preventDefault();
+        // Checks that all fields are filled; otherwise shows an error message
+        if (this.titleBook.value === '') {
+            this.incompleteMsg.textContent = 'Please insert a title';
+        } else if (this.authorBook.value === '') {
+            this.incompleteMsg.textContent = `Please insert an author's name`;
+        } else if (this.pagesBook.value === '') {
+            this.incompleteMsg.textContent = 'Please insert a number of pages';
+        } else if (!this.readYesBook.checked && !this.readNoBook.checked) {
+            this.incompleteMsg.textContent = 'Please select Yes or No';
+        } else {
+            this.incompleteMsg.textContent = '';
+            // Adds the book to the library
+            this.addBookToLibrary();
+        }
+    }
+    // Updates the library display
+    updateLibraryDisplay() {
+        // Clears the library container for an update
+        this.showLibraryContainer.innerHTML = '';
+        this.libraryTitle.textContent = '';
+        this.librarySubTitle.textContent = '';
+        // Creates and displays cards for each book
+        this.createCardBook();
+    }
+    // Creates and displays a card for each book in the library
+    createCardBook() {
+        // Sets the title of the library
+        this.libraryTitle.textContent = 'Welcome to your library';
+        // If there are no books in the library, set the subtitle accordingly
+        if (this.myLibrary.length === 0) {
+            this.librarySubTitle.textContent = 'No books available, click the button to add a book.';
+            return; // Exit the function early
+        } else {
+            this.librarySubTitle.textContent = 'This is the list of your books';
+        }
+        // Iterates through each book in the myLibrary array
+        this.myLibrary.forEach((book, index) => {
+            // Creates the book card container
+            const cardBook = document.createElement('div');
+            cardBook.classList.add('card-book');
+            this.showLibraryContainer.appendChild(cardBook);
+            // Adds book details to the card
+            cardBook.appendChild(this.createBookElement('Title', book.title, 'title-book'));
+            cardBook.appendChild(this.createBookElement('Author', book.author, 'author-book'));
+            cardBook.appendChild(this.createBookElement('N° pages', book.pages, 'author-book'));
+            // Shows the read status
+            const readElem = this.createBookElement('Read', book.readStatus, 'read-book');
+            cardBook.appendChild(readElem);
+            // Creates a button to remove the book
+            const btnRemoveBook = this.createButton('Delete', 'remove-book', () => {
+                // Removes the card from the DOM
+                cardBook.remove(); 
+                // Removes the book from the array
+                this.myLibrary.splice(index, 1);
+                // Updates the library display 
+                this.updateLibraryDisplay(); 
+            });
+            cardBook.appendChild(btnRemoveBook);
+            // Creates a button to change the read status of the book
+            const changeStatus = this.createButton('Change status of read', 'change-status', () => {
+                // Toggles the read status between 'yes' and 'no'
+                book.readStatus = (book.readStatus === 'yes') ? 'no' : 'yes';
+                // Updates the read status text
+                readElem.textContent = `Read: ${book.readStatus}`; 
+            });
+            cardBook.appendChild(changeStatus);
         });
-
-        const changeStatus = document.createElement('button');
-        changeStatus.setAttribute('type', 'submit');
-        changeStatus.textContent = 'Change status of read';
-        changeStatus.classList.add('change-status');
-        cardBook.appendChild(changeStatus);
-
-        changeStatus.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (book.readStatus === 'yes') {
-                book.readStatus = 'no';
-            } else {
-                book.readStatus = 'yes';
-            }
-            readElem.textContent = `Read: ${book.readStatus}`;
-        });
-    });
-    if (showLibraryContainer.children.length === 0) {
-        libraryTitle.textContent = 'Welcome to your library';
-        librarySubTitle.textContent = 'Click the button to add a book';
     }
-};
-// Clears existing content and creates book cards
-const updateLibraryDisplay = () => {  
-    showLibraryContainer.innerHTML = '';
-    libraryTitle.textContent = '';
-    librarySubTitle.textContent = '';
-    createCardBook();
-};
-// Clears the form fields
-const clearContent = () => {
-    titleBook.value = "";
-    authorBook.value = "";
-    pagesBook.value = "";
-    readYesBook.checked = false;
-    readNoBook.checked = false;
-};
-// Event handlers to show and hide the dialog
-DialogBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    showDialogBtn.classList.add('hide-element');
-    showLibraryContainer.classList.add('hide-element');
-    libraryTitle.classList.add('hide-element');
-    librarySubTitle.classList.add('hide-element');
-    incompleteMsg.textContent = '';
-    dialogAddBook.showModal();
-});
+    // Helper: Creates an element to display book information
+    createBookElement(label, content, className) {
+        const elem = document.createElement('p');
+        elem.textContent = `${label}: ${content}`;
+        elem.classList.add(className);
+        return elem;
+    }
+    // Helper: Creates a button with a callback
+    createButton(text, className, callback) {
+        const button = document.createElement('button');
+        button.textContent = text;
+        button.classList.add(className);
+        button.setAttribute('type', 'submit');
+        button.addEventListener('click', callback);
+        return button;
+    }
+    // Clears the form fields after adding a book
+    clearForm() {
+        this.titleBook.value = '';
+        this.authorBook.value = '';
+        this.pagesBook.value = '';
+        this.readYesBook.checked = false;
+        this.readNoBook.checked = false;
+    }
+}
+// Initializes the Library class
+const library = new Library();
 
-hideDialogBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    dialogAddBook.close();
-    showDialogBtn.classList.remove('hide-element');
-    showLibraryContainer.classList.remove('hide-element');
-    libraryTitle.classList.remove('hide-element');
-    librarySubTitle.classList.remove('hide-element');
-    if (showLibraryContainer.children.length === 0) {
-        libraryTitle.textContent = 'Welcome to your library';
-        librarySubTitle.textContent = 'click the button to add a book';
-    }
-});
-// Event handler to add a book
-addBookBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (titleBook.value === '') {
-        incompleteMsg.textContent = 'Please insert a title';
-    } else if (authorBook.value === '') {
-        incompleteMsg.textContent = `Please insert an author's name`;
-    } else if (pagesBook.value === '') {
-        incompleteMsg.textContent = 'Please insert a number of pages';
-    } else if (!readYesBook.checked && !readNoBook.checked) {
-        incompleteMsg.textContent = 'Please select Yes or No';
-    } else {
-        incompleteMsg.textContent = '';
-        addBookToLibrary();
-    }
-    
-});
 
